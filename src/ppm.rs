@@ -1,5 +1,6 @@
 use std::{fs::File, io::Write};
 
+#[allow(clippy::upper_case_acronyms)]
 pub struct PPM {
     f: File,
     w: usize,
