@@ -1,6 +1,6 @@
 use std::{fs::File, io::Write};
 
-pub fn print_header(f: &mut File, width: usize, height: usize) -> std::io::Result<()> {
+pub fn header(f: &mut File, width: usize, height: usize) -> std::io::Result<()> {
     let magic = "P3 # Magic number: use ASCII for debugging\n";
     let size = format!("{} {} # width & height\n", width, height);
     let maxcolor = "255 # maximum color\n";

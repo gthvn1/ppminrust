@@ -14,7 +14,7 @@ fn main() {
         Ok(file) => file,
     };
 
-    if let Err(e) = ppm::print_header(&mut file, width, height) {
+    if let Err(e) = ppm::header(&mut file, width, height) {
         panic!("failed to write header {}: {}", filename, e);
     }
 
