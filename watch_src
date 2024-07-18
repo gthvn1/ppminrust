@@ -1,0 +1,21 @@
+#!/bin/bash
+
+clear
+echo "Monitoring src/ for changes and build if any..."
+
+# TODO: add an option to run or test
+CMD="cargo build"
+
+inotifywait -q -m -r -e modify src | while read -r _DIRECTORY EVENT _FILE; do
+	# echo $DIRECTORY $EVENT $FILE
+	case $EVENT in
+	MODIFY*)
+		clear
+		echo "= ${CMD} ==============================="
+		echo
+		RUST_LOG=debug bash -c "${CMD}"
+		echo
+		echo "= $(date) ==================="
+		;;
+	esac
+done
