@@ -1,5 +1,4 @@
-mod ppm;
-use ppm::PPM;
+use ppminrust::ppm::PPM;
 
 fn main() {
     let filename = "sample.ppm";

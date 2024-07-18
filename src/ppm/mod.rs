@@ -1,4 +1,5 @@
-mod rgb;
+pub mod rgb;
+use rgb::Color;
 
 use std::{fs::File, io::Write};
 
@@ -34,7 +35,7 @@ impl PPM {
     }
 
     pub fn rasterize(self: &mut PPM) -> std::io::Result<()> {
-        let mut red = rgb::RED.to_string();
+        let mut red = Color::RED.to_string();
         red.push(' '); // we add an extra space to separate two writes
 
         for _ in 0..self.w {
