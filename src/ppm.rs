@@ -1,3 +1,5 @@
+mod rgb;
+
 use std::{fs::File, io::Write};
 
 #[allow(clippy::upper_case_acronyms)]
@@ -32,9 +34,12 @@ impl PPM {
     }
 
     pub fn rasterize(self: &mut PPM) -> std::io::Result<()> {
+        let mut red = rgb::RED.to_string();
+        red.push(' '); // we add an extra space to separate two writes
+
         for _ in 0..self.w {
             for _ in 0..self.h {
-                self.f.write_all("0 255 0 ".as_bytes())?;
+                self.f.write_all(red.as_bytes())?;
             }
             self.f.write_all("\n".as_bytes())?;
         }
