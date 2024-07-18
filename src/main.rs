@@ -1,26 +1,15 @@
 mod ppm;
-
-use core::panic;
-use std::fs::File;
+use ppm::PPM;
 
 fn main() {
-    // First step: write hello into the file
     let filename = "sample.ppm";
     let width = 10;
     let height = 10;
 
-    let mut file = match File::create(filename) {
-        Err(e) => panic!("failed to create {}: {}", filename, e),
-        Ok(file) => file,
-    };
+    let mut ppm = PPM::create(filename, width, height);
 
-    if let Err(e) = ppm::header(&mut file, width, height) {
-        panic!("failed to write header {}: {}", filename, e);
-    }
-
-    if let Err(e) = ppm::rasterize(&mut file, width, height) {
-        panic!("failed to write header {}: {}", filename, e);
-    }
+    ppm.write_header().unwrap();
+    ppm.rasterize().unwrap();
 
     println!("{} has been written.", filename);
 }
