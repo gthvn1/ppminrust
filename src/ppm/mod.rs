@@ -51,7 +51,7 @@ impl Ppm {
         Ok(())
     }
 
-    pub fn rasterize(self: &mut Ppm, op: Operation) {
+    pub fn rasterize(mut self: Ppm, op: Operation) -> Ppm {
         for y in 0..self.height {
             for x in 0..self.width {
                 match op {
@@ -64,5 +64,7 @@ impl Ppm {
                 }
             }
         }
+
+        self
     }
 }
