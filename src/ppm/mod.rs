@@ -1,49 +1,54 @@
 pub mod rgb; // use in tests/
 
-use rgb::Color;
-use std::{fs::File, io::Write};
+use std::{fs::File, io::Write, path::Path};
 
-pub struct Ppm {
-    f: File,
-    w: usize,
-    h: usize,
+pub struct Ppm<'a> {
+    filename: &'a Path,
+    width: usize,
+    height: usize,
+    matrix: Vec<Vec<usize>>,
 }
 
-impl Ppm {
-    pub fn create(filename: &str, width: usize, height: usize) -> Ppm {
-        let file = match File::create(filename) {
-            Err(e) => panic!("failed to create {}: {}", filename, e),
+impl<'a> Ppm<'a> {
+    pub fn create(filename: &'a str, width: usize, height: usize) -> Ppm {
+        Ppm {
+            filename: Path::new(filename),
+            width,
+            height,
+            matrix: vec![vec![0; height]; width],
+        }
+    }
+
+    pub fn write(self: &mut Ppm<'a>) -> std::io::Result<()> {
+        let magic = "P3 # Magic number: use ASCII for debugging\n";
+        let size = format!("{} {} # width & height\n", self.width, self.height);
+        let maxcolor = "255 # maximum color\n";
+
+        let mut file = match File::create(self.filename) {
+            Err(e) => panic!("failed to create {:?}: {}", self.filename, e),
             Ok(file) => file,
         };
 
-        Ppm {
-            f: file,
-            w: width,
-            h: height,
-        }
-    }
+        file.write_all(magic.as_bytes())?;
+        file.write_all(size.as_bytes())?;
+        file.write_all(maxcolor.as_bytes())?;
 
-    pub fn write_header(self: &mut Ppm) -> std::io::Result<()> {
-        let magic = "P3 # Magic number: use ASCII for debugging\n";
-        let size = format!("{} {} # width & height\n", self.w, self.h);
-        let maxcolor = "255 # maximum color\n";
-
-        self.f.write_all(magic.as_bytes())?;
-        self.f.write_all(size.as_bytes())?;
-        self.f.write_all(maxcolor.as_bytes())
-    }
-
-    pub fn rasterize(self: &mut Ppm) -> std::io::Result<()> {
-        let mut red = Color::RED.to_string();
-        red.push(' '); // we add an extra space to separate two writes
-
-        for _ in 0..self.w {
-            for _ in 0..self.h {
-                self.f.write_all(red.as_bytes())?;
+        for y in 0..self.height {
+            for x in 0..self.width {
+                let color = rgb::Rgb::new(self.matrix[x][y]);
+                file.write_all(color.to_string().as_bytes())?;
             }
-            self.f.write_all("\n".as_bytes())?;
+            file.write_all("\n".as_bytes())?;
         }
 
         Ok(())
+    }
+
+    pub fn rasterize(self: &mut Ppm<'a>) {
+        for y in 0..self.height {
+            for x in 0..self.width {
+                self.matrix[x][y] = y
+            }
+        }
     }
 }
