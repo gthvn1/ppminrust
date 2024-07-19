@@ -3,28 +3,27 @@ pub mod rgb; // use in tests/
 use rgb::Color;
 use std::{fs::File, io::Write};
 
-#[allow(clippy::upper_case_acronyms)]
-pub struct PPM {
+pub struct Ppm {
     f: File,
     w: usize,
     h: usize,
 }
 
-impl PPM {
-    pub fn create(filename: &str, width: usize, height: usize) -> PPM {
+impl Ppm {
+    pub fn create(filename: &str, width: usize, height: usize) -> Ppm {
         let file = match File::create(filename) {
             Err(e) => panic!("failed to create {}: {}", filename, e),
             Ok(file) => file,
         };
 
-        PPM {
+        Ppm {
             f: file,
             w: width,
             h: height,
         }
     }
 
-    pub fn write_header(self: &mut PPM) -> std::io::Result<()> {
+    pub fn write_header(self: &mut Ppm) -> std::io::Result<()> {
         let magic = "P3 # Magic number: use ASCII for debugging\n";
         let size = format!("{} {} # width & height\n", self.w, self.h);
         let maxcolor = "255 # maximum color\n";
@@ -34,7 +33,7 @@ impl PPM {
         self.f.write_all(maxcolor.as_bytes())
     }
 
-    pub fn rasterize(self: &mut PPM) -> std::io::Result<()> {
+    pub fn rasterize(self: &mut Ppm) -> std::io::Result<()> {
         let mut red = Color::RED.to_string();
         red.push(' '); // we add an extra space to separate two writes
 
