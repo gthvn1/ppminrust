@@ -1,4 +1,4 @@
-use ppminrust::ppm::Ppm;
+use ppminrust::ppm::{Operation, Ppm};
 
 fn main() {
     let filename = "sample.ppm";
@@ -7,7 +7,7 @@ fn main() {
 
     let mut ppm = Ppm::create(filename, width, height);
 
-    ppm.rasterize();
+    ppm.rasterize(Operation::Fill(0x00FF00));
     ppm.write().unwrap();
 
     println!("{} has been written.", filename);

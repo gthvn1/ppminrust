@@ -2,6 +2,11 @@ pub mod rgb; // use in tests/
 
 use std::{fs::File, io::Write};
 
+// Operations that can be perform by rasterize
+pub enum Operation {
+    Fill(usize),
+}
+
 pub struct Ppm {
     filename: String,
     width: usize,
@@ -45,10 +50,12 @@ impl Ppm {
         Ok(())
     }
 
-    pub fn rasterize(self: &mut Ppm) {
+    pub fn rasterize(self: &mut Ppm, op: Operation) {
         for y in 0..self.height {
             for x in 0..self.width {
-                self.matrix[x][y] = y
+                match op {
+                    Operation::Fill(color) => self.matrix[x][y] = color,
+                }
             }
         }
     }
