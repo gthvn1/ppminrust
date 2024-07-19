@@ -54,6 +54,6 @@ impl Rgb {
     }
 
     pub fn to_string(self: Rgb) -> String {
-        format!("{} {} {} ", self.r, self.g, self.b)
+        format!("{} {} {}", self.r, self.g, self.b)
     }
 }
