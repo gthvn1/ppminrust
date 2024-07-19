@@ -4,8 +4,9 @@ use std::{fs::File, io::Write};
 
 // Operations that can be perform by rasterize
 pub enum Operation {
-    Fill(usize), // Set all pixels to color as parameter
-    Id(usize),   // Set pixel where x = y to color
+    Fill(usize),                        // Set all pixels to color as parameter
+    Id(usize),                          // Set pixel where x = y to color
+    Circle(usize, usize, usize, usize), // CenterX, CenterY, Radius, Color
 }
 
 pub struct Ppm {
@@ -58,6 +59,14 @@ impl Ppm {
                     Operation::Fill(color) => self.matrix[x][y] = color,
                     Operation::Id(color) => {
                         if x == y {
+                            self.matrix[x][y] = color
+                        }
+                    }
+                    Operation::Circle(cx, cy, radius, color) => {
+                        let dx: f32 = x as f32 - cx as f32;
+                        let dy: f32 = y as f32 - cy as f32;
+                        let dist: f32 = f32::sqrt(dx * dx + dy * dy);
+                        if dist < (radius as f32) {
                             self.matrix[x][y] = color
                         }
                     }
