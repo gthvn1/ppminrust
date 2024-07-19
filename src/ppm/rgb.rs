@@ -1,16 +1,3 @@
-pub struct Color;
-impl Color {
-    pub const BLACK: Rgb = Rgb { r: 0, g: 0, b: 0 };
-    pub const BLUE: Rgb = Rgb {
-        r: 0,
-        g: 94,
-        b: 184,
-    };
-    pub const GREEN: Rgb = Rgb { r: 255, g: 0, b: 0 };
-    pub const RED: Rgb = Rgb { r: 255, g: 0, b: 0 };
-    pub const WHITE: Rgb = Rgb { r: 0, g: 0, b: 0 };
-}
-
 pub struct Rgb {
     r: u8,
     g: u8,
