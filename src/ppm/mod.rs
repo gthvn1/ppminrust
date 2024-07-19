@@ -1,6 +1,6 @@
-pub mod rgb;
-use rgb::Color;
+pub mod rgb; // use in tests/
 
+use rgb::Color;
 use std::{fs::File, io::Write};
 
 #[allow(clippy::upper_case_acronyms)]
