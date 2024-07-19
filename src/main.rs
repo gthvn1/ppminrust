@@ -8,6 +8,7 @@ fn main() {
     let mut ppm = Ppm::create(filename, width, height);
 
     ppm.rasterize(Operation::Fill(0x00FF00));
+    ppm.rasterize(Operation::Id(0x0000FF));
     ppm.write().unwrap();
 
     println!("{} has been written.", filename);

@@ -4,7 +4,8 @@ use std::{fs::File, io::Write};
 
 // Operations that can be perform by rasterize
 pub enum Operation {
-    Fill(usize),
+    Fill(usize), // Set all pixels to color as parameter
+    Id(usize),   // Set pixel where x = y to color
 }
 
 pub struct Ppm {
@@ -55,6 +56,11 @@ impl Ppm {
             for x in 0..self.width {
                 match op {
                     Operation::Fill(color) => self.matrix[x][y] = color,
+                    Operation::Id(color) => {
+                        if x == y {
+                            self.matrix[x][y] = color
+                        }
+                    }
                 }
             }
         }
